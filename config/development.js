@@ -1,3 +1,3 @@
 module.exports = {
-  APP_URI: 'https://webify-us.myshopify.com',
+  APP_URI: 'https://heroku-node-shopify.herokuapp.com',
 };
