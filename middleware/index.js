@@ -11,6 +11,7 @@ const verifyHmac = require('../helpers').verifyHmac;
  * @param {function} next - Function that represents the next piece of middleware.
  */
 function verifyWebhook(req, res, next) {
+  console.log('hooking');
   let hmac;
   let data;
   try {
@@ -21,12 +22,17 @@ function verifyWebhook(req, res, next) {
     res.sendStatus(200);
   }
 
+  console.log(hmac);
+  console.log(data);
+
   if (verifyHmac(JSON.stringify(data), hmac)) {
+    console.log('passed HMAC CHECK');
     req.topic = req.get('X-Shopify-Topic');
     req.shop = req.get('X-Shopify-Shop-Domain');
     return next();
   }
 
+  console.log('failed HMAC CHECK');
   return res.sendStatus(200);
 }
 

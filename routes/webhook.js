@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.post('/', verifyWebhook, (req, res) => {
   // This is where you should do something with your webhooks. Filter by Topic etc.
+  res.json({ status: 'success', topic });
   return res.sendStatus(200);
 });
 

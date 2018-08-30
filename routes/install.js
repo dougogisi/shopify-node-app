@@ -31,6 +31,7 @@ router.get('/', (req, res) => {
       shop.nonce = nonce;
       save = shop.save();
     }
+
     return save.then(() => res.redirect(redirectURI));
   });
 });
@@ -51,7 +52,7 @@ router.get('/callback', (req, res) => {
         console.log(error);
         res.redirect('/error');
       }
-      console.log(data);
+
       shop.accessToken = data.access_token;
       shop.isActive = true;
       shop.save((saveError) => {
@@ -59,7 +60,10 @@ router.get('/callback', (req, res) => {
           console.log('Cannot save shop: ', saveError);
           res.redirect('/error');
         }
+
         if (config.APP_STORE_NAME) {
+          buildWebhook('customers/create', `${config.APP_URI}/webhook/`, shopAPI, (err, data, headers) => { console.log(err); });
+          buildWebhook('customers/update', `${config.APP_URI}/webhook/`, shopAPI, (err, data, headers) => { console.log(err); });
           res.redirect(`https://${shop.shopify_domain}/admin/apps/${config.APP_STORE_NAME}`);
         } else {
           res.redirect(`https://${shop.shopify_domain}/admin/apps`);

@@ -75,6 +75,7 @@ module.exports = {
 
     const sharedSecret = config.SHOPIFY_SHARED_SECRET;
     const calculatedSignature = crypto.createHmac('sha256', sharedSecret).update(data).digest('hex');
+    console.log(calculatedSignature);
     return calculatedSignature === hmac;
   },
 
@@ -87,6 +88,7 @@ module.exports = {
     delete query.hmac;
     const sortedQuery = Object.keys(query).map(key => `${key}=${Array(query[key]).join(',')}`).sort().join('&');
     const calculatedSignature = crypto.createHmac('sha256', sharedSecret).update(sortedQuery).digest('hex');
+    console.log(calculatedSignature);
     if (calculatedSignature === hmac) {
       return true;
     }
@@ -94,5 +96,3 @@ module.exports = {
     return false;
   },
 };
-
-
